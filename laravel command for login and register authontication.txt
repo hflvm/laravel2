@@ -1,0 +1,60 @@
+laravel from make login authentication auto defult in laravel
+
+1-composer require laravel/ui --dev
+
+2-npm i
+
+3- to refres .env file after rdit
+>composer dump-autoload
+
+
+
+
+4- to create register by facebook 
+>composer require laravel/socialite
+
+from facebook dev
+198554338632370
+a87668d640a1b8ab1ff30bbc0cd3ffbf
+
+write that in config app
+-laravel\socialite\SocialiteServiceProvider::class,
+-'socialite' =>laravel\socialite\Facades\socialite::class,
+
+write that in env.
+FB_CLTENT_ID =198554338632370
+FB_CLTENT_SECRET=a87668d640a1b8ab1ff30bbc0cd3ffbf
+FB_REDIRECT='http://localhost:8000/callback/facebook'
+
+write that in config/services
+'facebook'=> [
+	'client_id'=> env('FB_CLTENT_ID'),
+	'client_secret'=>env('FB_CLTENT_SECRET'),
+	'redirect'=>env('FB_REDIRECT'),
+],
+
+in register blade
+<a href={{"URL('redirect/facebook')"}}> login with facebook</a>
+
+in route 
+Route::get('/redirect/{services}', 'SocialController@redirect');
+
+cmd to make controller
+php artisan make:controller SocialController
+
+make this method in SocialController
+ public function redirect($service){
+        return Socialite::driver($service)->redirect();
+    }
+
+ßÏÇ ÇäÊ ÑæÍÊ áÝíÓÈæß ÚÇæÒ ÇÑÌÚß ááãæÞÚ ÊÇäí 
+in route 
+Route::get('/callback/{services}', 'SocialController@callback');
+
+public function callback($service){
+        return $user = Socialite::with($service)->user();
+    }
+
+
+
+

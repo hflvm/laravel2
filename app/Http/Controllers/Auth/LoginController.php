@@ -36,4 +36,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    // this overrigt functoin that return mobile مكان email الهوا defult from class AuthenticatesUsers
+    public function username()
+    {
+        $value = request()->input('identify');
+        $filed = filter_var($value, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
+        request()->merge([$filed => $value]);
+        return $filed;
+    }
 }
